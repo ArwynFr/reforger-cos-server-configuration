@@ -1,0 +1,596 @@
+{
+  "a2s": {
+    "address": "0.0.0.0",
+    "port": 17778
+  },
+  "bindAddress": "0.0.0.0",
+  "bindPort": 2002,
+  "game": {
+    "name": "[COS] Commandement des Opérations Spéciales (serveur 2)",
+    "admins": [],
+    "scenarioId": "{F45C6C15D31252E6}Missions/ScenaripCOS.conf",
+    "maxPlayers": 64,
+    "visible": true,
+    "crossPlatform": true,
+    "gameProperties": {
+      "serverMaxViewDistance": 1600,
+      "serverMinGrassDistance": 50,
+      "networkViewDistance": 1500,
+      "disableThirdPerson": false,
+      "fastValidation": true,
+      "battlEye": true,
+      "VONDisableUI": false,
+      "VONDisableDirectSpeechUI": false,
+      "VONCanTransmitCrossFaction": false,
+      "missionHeader": {
+        "m_eEditableGameFlags": 6,
+        "m_eDefaultGameFlags": 6,
+        "m_ACE_Settings": {
+          "m_ACE_Medical_Settings": {
+            "m_bSecondChanceOnHeadEnabled": 1
+          },
+          "m_ACE_Medical_Circulation": {
+            "m_bCardiacArrestForAIEnabled": 1
+          }
+        }
+      }
+    },
+    "modsRequiredByDefault": true,
+    "mods": [
+      {
+        "modId": "6871182BE562F4C7",
+        "name": "MAP COS Kolguyev"
+      },
+      {
+        "modId": "6176C854FF5FAFA8",
+        "name": "25K View Distance"
+      },
+      {
+        "name": "3DRS PATCHES V1",
+        "modId": "663E55F5349466D3"
+      },
+      {
+        "name": "3DRS SATCOM",
+        "modId": "667C07AC2417F5D2"
+      },
+      {
+        "modId": "672B0395726428B6",
+        "name": "506th IRRU - Enhanced Radio"
+      },
+      {
+        "modId": "6462F28F4F6EF961",
+        "name": "75th regiment equipment"
+      },
+      {
+        "name": "Accuracy AX Int.",
+        "modId": "66FD2BF96A622FE3"
+      },
+      {
+        "modId": "65AD7C249E4ECDFB",
+        "name": "ACE Captives Dev"
+      },
+      {
+        "modId": "65AD7C379CBD394D",
+        "name": "ACE Carrying Dev"
+      },
+      {
+        "modId": "65AD7BCC9F6B3B4E",
+        "name": "ACE Chopping Dev"
+      },
+      {
+        "name": "ACE Core Dev",
+        "modId": "65AD7D0D9941A380"
+      },
+      {
+        "modId": "65AD7D1E9EEAFA53",
+        "name": "ACE Explosives Dev"
+      },
+      {
+        "name": "ACE Finger Dev",
+        "modId": "65AD7D2E9866FA6E"
+      },
+      {
+        "modId": "671F73D99978B4F2",
+        "name": "ACE Medical Breathing Dev"
+      },
+      {
+        "modId": "6586079789278413",
+        "name": "ACE Medical Core Dev"
+      },
+      {
+        "modId": "65B343F799FB521B",
+        "name": "ACE Medical Hitzones Dev"
+      },
+      {
+        "modId": "65AD7CB89F219E38",
+        "name": "ACE Tactical Ladder Dev"
+      },
+      {
+        "modId": "65AD7CD09CAEC4E2",
+        "name": "ACE Tactical Periscope Dev"
+      },
+      {
+        "modId": "65AD7CE59E8DB349",
+        "name": "ACE Trenches Dev"
+      },
+      {
+        "name": "Advanced Zeroing System",
+        "modId": "6738DB574AAA1CB4"
+      },
+      {
+        "name": "AKI CORE",
+        "modId": "62CCD69DD17E4F2F"
+      },
+      {
+        "modId": "662EB83AB3F8CAE3",
+        "name": "AKI_Core_Upgrade"
+      },
+      {
+        "modId": "606B100247F5C709",
+        "name": "Bacon Loadout Editor"
+      },
+      {
+        "name": "Bacon Parachute",
+        "modId": "6198EC294DEC63C0"
+      },
+      {
+        "modId": "5AB301290317994A",
+        "name": "Bacon Suppressors"
+      },
+      {
+        "name": "Barrett M82",
+        "modId": "5AC2954C784671B3"
+      },
+      {
+        "name": "Barrett M82 Fix",
+        "modId": "65E643427EB3B340"
+      },
+      {
+        "name": "Benelli M4",
+        "modId": "5D915A9DC6EB0856"
+      },
+      {
+        "modId": "68AB4B626C8AB069",
+        "name": "Basic Hazmat Suit"
+      },
+      {
+        "modId": "597C0CF3A7AA8A99",
+        "name": "BetterSounds 4.0 Alpha"
+      },
+      {
+        "modId": "660EFCA90BCCD9E6",
+        "name": "BetterSounds - RHS Compat"
+      },
+      {
+        "modId": "66E1345A0262DD74",
+        "name": "BM - Misfits & GRS Comp"
+      },
+      {
+        "modId": "65DF10250D542FAC",
+        "name": "Boats assets"
+      },
+      {
+        "modId": "5C9758250C8C56F1",
+        "name": "Bon Action Animations"
+      },
+      {
+        "modId": "647076765B0D71B0",
+        "name": "Caps MK46-MK48 Fix"
+      },
+      {
+        "modId": "6319242B050D1483",
+        "name": "Caps Weapon Pack",
+        "version": "1.0.30"
+      },
+      {
+        "modId": "66CC66046FA127DA",
+        "name": "CDD Darkline Core"
+      },
+      {
+        "modId": "5F268647F8A1A1F4",
+        "name": "CRX Enfusion A.I."
+      },
+      {
+        "name": "D3s Chemlights",
+        "modId": "608694907CE8FBCB"
+      },
+      {
+        "modId": "65254226BB9B318C",
+        "name": "Disable AI Voice"
+      },
+      {
+        "modId": "5EF8AADD3B3C81F2",
+        "name": "Disable VON unconscious"
+      },
+      {
+        "name": "Diving Mod",
+        "modId": "610B4484DBB3FB88"
+      },
+      {
+        "name": "DOOR BREACHING",
+        "modId": "627D0C6AE5F771FB"
+      },
+      {
+        "name": "Drones Improved",
+        "modId": "65B4ED632881539A"
+      },
+      {
+        "name": "Drums Sunglasses",
+        "modId": "65F9014FD405104E"
+      },
+      {
+        "name": "DSD CORE",
+        "modId": "627CE4D6953DCE8A"
+      },
+      {
+        "name": "DSLR Camera",
+        "modId": "64F1229F486E8CBC"
+      },
+      {
+        "modId": "669D23508D7AC003",
+        "name": "Easy Equipment pack"
+      },
+      {
+        "name": "EE_Suppression",
+        "modId": "665C00EFCCAE1AB3"
+      },
+      {
+        "name": "EOD Hand Entry",
+        "modId": "646A1AFB53E782AC"
+      },
+      {
+        "modId": "64706CF53044CC66",
+        "name": "EUROCOPTER EC 665 TIGRE"
+      },
+      {
+        "modId": "65AEE6A10796CF27",
+        "name": "FIA - Expanded Drones"
+      },
+      {
+        "modId": "616478A18DC7DCB6",
+        "name": "FN SCAR -HEAVY and LIGHT-"
+      },
+      {
+        "name": "FPV drones",
+        "modId": "65B007413A813417"
+      },
+      {
+        "modId": "6118D07B3BCEEA17",
+        "name": "French Army Gears"
+      },
+      {
+        "modId": "67173420A4F5665D",
+        "name": "FRG_Props_Structures"
+      },
+      {
+        "modId": "60CC94C046837439",
+        "name": "Game Master Copy Paste"
+      },
+      {
+        "name": "Game Master FX",
+        "modId": "5994AD5A9F33BE57"
+      },
+      {
+        "modId": "684B51A43B4F1AAB",
+        "name": "Gazelle_Strike_BarrettM82"
+      },
+      {
+        "modId": "628B48364AFD286C",
+        "name": "GM Editable Intel"
+      },
+      {
+        "modId": "5C73156675E11A0F",
+        "name": "GM Persistent Loadouts"
+      },
+      {
+        "modId": "655D72AF8DB4CB84",
+        "name": "Grays Adjustable Doors"
+      },
+      {
+        "name": "GRS - Apparel",
+        "modId": "65157D09F042428A"
+      },
+      {
+        "modId": "65183608D6DA5728",
+        "name": "GRS - Belts & Bags & Droplegs"
+      },
+      {
+        "name": "GRS - Bundle ",
+        "modId": "6518EA4DDEA42E15"
+      },
+      {
+        "modId": "65DACC64CE785B6C",
+        "name": "GRS - Dev framework"
+      },
+      {
+        "modId": "6515672F96701110",
+        "name": "GRS - Essentials"
+      },
+      {
+        "name": "GRS - Footwear",
+        "modId": "66CEA22046CAA731"
+      },
+      {
+        "modId": "651834C8D77BF86B",
+        "name": "GRS - Modular Vests & Rigs"
+      },
+      {
+        "name": "GRS - Patches",
+        "modId": "657B064AE0E231DF"
+      },
+      {
+        "name": "GRS_PMC_GEAR",
+        "modId": "65E80E3A30BF1438"
+      },
+      {
+        "modId": "64F869693699EEA7",
+        "name": "Identity & Character Selector"
+      },
+      {
+        "modId": "626A8C89099C8F12",
+        "name": "IH_Better_GM_Props"
+      },
+      {
+        "modId": "62FCEB51DF8527B6",
+        "name": "Improved Blood Effect"
+      },
+      {
+        "modId": "64594B4F6C4E9718",
+        "name": "improved reforger ragdolls"
+      },
+      {
+        "modId": "60E2D7E5A20FABEB",
+        "name": "Keep Abandoned Vehicles"
+      },
+      {
+        "modId": "620E426C34BE0D17",
+        "name": "Laser Rangefinder"
+      },
+      {
+        "name": "M249 Scope Rails",
+        "modId": "5AF6E0F075D79473"
+      },
+      {
+        "modId": "65A13067BB6BE151",
+        "name": "M50 gas mask"
+      },
+      {
+        "name": "Map Drawing",
+        "modId": "656AC01634459D8D"
+      },
+      {
+        "name": "MFD Framework",
+        "modId": "64EE818E08AFCF94"
+      },
+      {
+        "modId": "62593E440F3FF363",
+        "name": "Military boats"
+      },
+      {
+        "modId": "652C421FF965A324",
+        "name": "Misfits Squad Backpacks"
+      },
+      {
+        "name": "MK46 - MK48",
+        "modId": "6190E1D2CF0A921D"
+      },
+      {
+        "modId": "64D4E4ACDE3EBEDB",
+        "name": "MOTAR_GhillieSuit"
+      },
+      {
+        "modId": "66155E256CB5FFE5",
+        "name": "MrWW GRS Retextures BLUFOR 1"
+      },
+      {
+        "name": "MRZR",
+        "modId": "64900A5A31F5DCB5"
+      },
+      {
+        "name": "NH_Fastroping",
+        "modId": "671140CC3DE9D460"
+      },
+      {
+        "name": "NH90 TTH - FRM",
+        "modId": "645ECC5F86DFCD31"
+      },
+      {
+        "modId": "62D023385506C7FF",
+        "name": "No Icon For Uncon"
+      },
+      {
+        "modId": "64D5438A385B978C",
+        "name": "No Player Name Tags"
+      },
+      {
+        "modId": "60612C225328522E",
+        "name": "No Weapon Drop Unconscious"
+      },
+      {
+        "name": "NVG-Sights",
+        "modId": "65B77DB66391F6F3"
+      },
+      {
+        "modId": "6569234F1ED0242D",
+        "name": "PARACHUTE PLUS BAGS"
+      },
+      {
+        "modId": "61110CC4F1FF9C8A",
+        "name": "Placeables for GM byHeine"
+      },
+      {
+        "name": "Rayzi Utils",
+        "modId": "6632F94B46173164"
+      },
+      {
+        "name": "Rayzis Optics",
+        "modId": "628F720BC527C143"
+      },
+      {
+        "modId": "6696004814ACBD64",
+        "name": "RCD TPP Change"
+      },
+      {
+        "modId": "65AD60E204191D37",
+        "name": "Realistic Combat Drones"
+      },
+      {
+        "modId": "65D0FE5B02FEC2D2",
+        "name": "Realistic Combat Drones RHS"
+      },
+      {
+        "name": "RHIB",
+        "modId": "5994614FB5AD35C2"
+      },
+      {
+        "modId": "1337C0DE5DABBEEF",
+        "name": "RHS - Content Pack 01"
+      },
+      {
+        "modId": "BADC0DEDABBEDA5E",
+        "name": "RHS - Content Pack 02"
+      },
+      {
+        "modId": "595F2BF2F44836FB",
+        "name": "RHS - Status Quo"
+      },
+      {
+        "modId": "6513632B54E38040",
+        "name": "RHS M-Pact Reskin By SiL"
+      },
+      {
+        "modId": "5ABD0CB57F7E9EB1",
+        "name": "RIS Laser Attachments"
+      },
+      {
+        "name": "RL NH90 FIX",
+        "modId": "65B9669DAC82EA4A"
+      },
+      {
+        "modId": "64DF7E9C426AD97C",
+        "name": "SA342 Gazelle - FRM"
+      },
+      {
+        "name": "scuba diving fins ",
+        "modId": "671C218104CC960F"
+      },
+      {
+        "modId": "684754EB3DA81A26",
+        "name": "SDV - Vehicle Only"
+      },
+      {
+        "modId": "5AAAC70D754245DD",
+        "name": "Server Admin Tools"
+      },
+      {
+        "name": "SESOF Compass",
+        "modId": "5F0CA2820542039B"
+      },
+      {
+        "name": "SpaceCore",
+        "modId": "5E389BB9F58B79A6"
+      },
+      {
+        "modId": "628EDA2ABC937159",
+        "name": "Structures For GM byHeine"
+      },
+      {
+        "name": "Stun Grenade",
+        "modId": "59EAA899751805DF"
+      },
+      {
+        "modId": "686815B3897DA5E8",
+        "name": "SWAG 300 Blackout Pack Pt 2"
+      },
+      {
+        "modId": "68483D57901DF5E2",
+        "name": "Swag 300 Blackout Pack"
+      },
+      {
+        "name": "SWAG Garmin",
+        "modId": "66D470CA65A1005A"
+      },
+      {
+        "modId": "6708A2497129CDEE",
+        "name": "SWAG Infiltration Methods 2.0"
+      },
+      {
+        "modId": "646E249764095363",
+        "name": "T.A.O RHS AND WP PACK COMPAT"
+      },
+      {
+        "modId": "61ECB5EFAA346151",
+        "name": "TacticalAnimationOverhaul TEST"
+      },
+      {
+        "name": "TEN_Gazelle_MG",
+        "modId": "66A6A1796F962768"
+      },
+      {
+        "modId": "661B5884EF0760FE",
+        "name": "Thermal PostProcess"
+      },
+      {
+        "modId": "664644E13CBDE9DE",
+        "name": "TIGRE FIX and Variant"
+      },
+      {
+        "modId": "64B119835976183D",
+        "name": "VON UI Simplification"
+      },
+      {
+        "name": "VT4 - FRM",
+        "modId": "663B2784961621FB"
+      },
+      {
+        "name": "WCS_Armaments",
+        "modId": "629B2BA37EFFD577"
+      },
+      {
+        "name": "WCS_Earplugs",
+        "modId": "612F512CD4CB21D5"
+      },
+      {
+        "name": "WIP Suffren V1",
+        "modId": "631CB19B0EF94ADB"
+      },
+      {
+        "name": "Wirecutters 2",
+        "modId": "62F364B35E9B51B0"
+      },
+      {
+        "name": "x26p taser",
+        "modId": "5E5CF1DCC95C888E"
+      },
+      {
+        "name": "You can sit",
+        "modId": "6052A9DD45564825"
+      },
+      {
+        "modId": "5D0551624969C92E",
+        "name": "Zeliks Character"
+      },
+      {
+        "modId": "6718FE4BBDA71C7C",
+        "name": "SkyMap-X"
+      },
+      {
+        "modId": "687F58C367AC47F3",
+        "name": "S-UAV Tweaks"
+      }
+    ]
+  },
+  "operating": {
+    "slotReservationTimeout": 60,
+    "disableServerShutdown": false,
+    "playerSaveTime": 120,
+    "lobbyPlayerSynchronise": true,
+    "joinQueue": {
+      "maxSize": 0
+    },
+    "disableNavmeshStreaming": [
+      "Soldiers",
+      "BTRlike"
+    ]
+  }
+}

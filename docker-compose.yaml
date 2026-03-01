@@ -1,0 +1,33 @@
+services:
+
+  server1:
+    build: docker
+    environment:
+      GAME_PASSWORD: $SERVER1_PASSWORD
+      GAME_PASSWORD_ADMIN: ""
+    network_mode: host
+    restart: unless-stopped
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 65535
+        hard: 65535
+    volumes:
+      - ./server1.json:/config.json
+      - /srv/reforger/cos-1:/reforger
+
+  server2:
+    build: docker
+    environment:
+      GAME_PASSWORD: $SERVER2_PASSWORD
+      GAME_PASSWORD_ADMIN: $SERVER2_PASSWORD
+    network_mode: host
+    restart: unless-stopped
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 65535
+        hard: 65535
+    volumes:
+      - ./server2.json:/config.json
+      - /srv/reforger/cos-2:/reforger
