@@ -5,6 +5,7 @@
   },
   "bindAddress": "0.0.0.0",
   "bindPort": 2001,
+  "publicPort": 2001,
   "game": {
     "name": "[COS] Commandement des Opérations Spéciales (serveur 1)",
     "admins": [],
