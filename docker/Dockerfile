@@ -26,6 +26,7 @@ RUN apt update \
   && rm -rf /var/lib/apt/lists/
 COPY --from=steamcmd-install /steamcmd /steamcmd
 COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
 
 STOPSIGNAL SIGINT
 VOLUME [ "/reforger" ]
