@@ -1,12 +1,16 @@
 services:
-
   server1:
     build: docker
     environment:
       GAME_PASSWORD: $SERVER1_PASSWORD
       GAME_PASSWORD_ADMIN: ""
+      MAX_FPS: 60
     network_mode: host
     restart: unless-stopped
+    cpuset: "0,1,2"
+    sysctls:
+      - net.core.rmem_max=16777216
+      - net.core.netdev_max_backlog=5000
     ulimits:
       nproc: 65535
       nofile:
@@ -21,8 +25,13 @@ services:
     environment:
       GAME_PASSWORD: $SERVER2_PASSWORD
       GAME_PASSWORD_ADMIN: $SERVER2_PASSWORD
+      MAX_FPS: 60
     network_mode: host
     restart: unless-stopped
+    cpuset: "3,7"
+    sysctls:
+      - net.core.rmem_max=16777216
+      - net.core.netdev_max_backlog=5000
     ulimits:
       nproc: 65535
       nofile:
