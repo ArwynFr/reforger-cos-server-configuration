@@ -1,0 +1,10 @@
+[Unit]
+Description=Reforger server manager
+After=network.target
+
+[Service]
+Type=notify
+ExecStart=/home/arwyn/reforger-cos-server-configuration/src/ArwynFr.Reforger.ServerMgr/bin/Release/net10.0/linux-x64/publish/ArwynFr.Reforger.ServerMgr
+
+[Install]
+WantedBy=multi-user.target
