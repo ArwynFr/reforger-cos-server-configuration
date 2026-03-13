@@ -1,16 +1,22 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@inherits LayoutComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<div class="page">
+<div class="page d-flex">
     <div class="sidebar">
         <NavMenu />
     </div>
 
-    <main>
+    <main class="d-flex flex-column">
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            @if (username is not "")
+            {
+                <span> Bonjour, @username </span>
+            }
         </div>
 
-        <article class="content px-4">
+        <article class="content px-4 mb-3 h-100 d-flex flex-column">
             @Body
         </article>
     </main>
@@ -21,3 +27,13 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code
+{
+    private string username = string.Empty;
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        username = state.User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+    }
+}

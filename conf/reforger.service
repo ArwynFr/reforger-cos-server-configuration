@@ -5,6 +5,7 @@ After=network.target
 [Service]
 Type=notify
 ExecStart=/home/arwyn/reforger-cos-server-configuration/src/ArwynFr.Reforger.ServerMgr/bin/Release/net10.0/linux-x64/publish/ArwynFr.Reforger.ServerMgr --urls http://+:5000
+EnvironmentFile=/etc/reforger
 
 [Install]
 WantedBy=multi-user.target
