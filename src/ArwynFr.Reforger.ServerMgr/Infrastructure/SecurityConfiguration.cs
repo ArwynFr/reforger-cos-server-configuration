@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 
-namespace ArwynFr.Reforger.ServerMgr.Configuration;
+namespace ArwynFr.Reforger.ServerMgr.Infrastructure;
 
-internal static class AuthConfiguration
+internal static class SecurityConfiguration
 {
     public static void AddAuthentication(WebApplicationBuilder builder)
     {
