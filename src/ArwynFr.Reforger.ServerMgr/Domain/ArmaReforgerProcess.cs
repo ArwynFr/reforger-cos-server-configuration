@@ -1,0 +1,43 @@
+using System.Diagnostics;
+
+using Microsoft.Extensions.Options;
+
+namespace ArwynFr.Reforger.ServerMgr.Domain;
+
+internal class ArmaReforgerProcess(IServiceProvider serviceProvider, string name)
+{
+    private IOptions<ReforgerOptions> Options => serviceProvider.GetRequiredService<IOptions<ReforgerOptions>>();
+    private string PidFilename => Path.Join(Options.Value.BasePath, name, "server.pid");
+    private string BinFilename => Path.Join(Options.Value.BasePath, name, "ArmaReforgerServer");
+    private string ConfigFilename => Path.Join(Options.Value.BasePath, name, "server.json");
+    private string ProfilePath => Path.Join(Options.Value.BasePath, name);
+    private string PidContents => new FileInfo(PidFilename) is { Exists: true } ? File.ReadAllText(PidFilename) : string.Empty;
+    private int? ProcessId => int.TryParse(PidContents, out var result) ? result : null;
+    private Process? Process => Process.GetProcesses().FirstOrDefault(_ => _.Id == ProcessId);
+    public bool Running => Process is { HasExited: false };
+
+    public async Task EnsureStarted(CancellationToken cancellationToken)
+    {
+        if (Running) { return; }
+        ProcessStartInfo processStartInfo = new(BinFilename, ["-config", ConfigFilename, "-profile", ProfilePath, "-maxFPS", "60", "-loadsessionsave", "-nothrow"]);
+        var process = Process.Start(processStartInfo) ?? throw new InvalidOperationException();
+        FileInfo fileInfo = new(PidFilename);
+        Directory.CreateDirectory(fileInfo.Directory!.FullName);
+        await File.WriteAllTextAsync(PidFilename, process.Id.ToString(), cancellationToken);
+    }
+
+    public async Task Stop(CancellationToken cancellationToken)
+    {
+        if (Process is not { HasExited: false }) { return; }
+        Process.Kill();
+        
+        if (Process is not { HasExited: false }) { return; }
+        await Process.WaitForExitAsync(cancellationToken);
+    }
+
+    public Task Wait(CancellationToken cancellationToken) => Process switch
+    {
+        { HasExited: false } => Process.WaitForExitAsync(cancellationToken),
+        _ => Task.CompletedTask
+    };
+}

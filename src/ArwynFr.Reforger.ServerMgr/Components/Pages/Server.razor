@@ -1,43 +1,105 @@
-@page "/server/{ServerName}"
 @using ArwynFr.Reforger.ServerMgr.Domain
 @using Microsoft.AspNetCore.Authorization
 @using System.Diagnostics
+
+@page "/server/{ServerName}"
+@rendermode InteractiveServer
 @attribute [Authorize]
 
 @inject IServiceProvider ServiceProvider
 
-<h1>Server control : @ServerName</h1>
+<div class="container">
 
-<div class="form-check form-switch m-3">
-  <input class="form-check-input" type="checkbox" value="@IsRunning()" id="checkNativeSwitch" switch>
-  <label class="form-check-label" for="checkNativeSwitch">
-    Serveur actif
-  </label>
+    <h1 class="mb-5">Server control : @ServerName</h1>
+
+    <div class="row gx-5">
+        <div class="col">
+            <div class="card p-3 bg-primary-subtle border-primary-subtle">
+                <h2 class="h5">⚡ Etat du serveur</h2>
+                <p class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="enabledCheck" checked="@IsEnabled"
+                           disabled>
+                    <label class="form-check-label" for="enabledCheck">Serveur actif</label>
+                </p>
+                <p class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="runningCheck" checked="@IsRunning"
+                           disabled>
+                    <label class="form-check-label" for="runningCheck">Serveur démarré</label>
+                </p>
+            </div>
+            <div class="card p-3 my-3 bg-primary-subtle border-primary-subtle">
+                <h2 class="h5">⏻ Contrôle du serveur</h2>
+                @if (InProgress)
+                {
+                    <div class="text-center m-3">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p class="btn-group">
+                        <button class="btn btn-lg btn-success" @onclick="Start" disabled="@StartDisabled"> Start </button>
+                        <button class="btn btn-lg btn-danger" @onclick="Stop" disabled="@StopDisabled"> Stop </button>
+                    </p>
+                }
+            </div>
+            @if (ErrorMessage is not "")
+            {
+                <p class="card p-3 my-3 bg-danger-subtle border-danger-subtle text-danger">
+                    @ErrorMessage
+                </p>
+            }
+        </div>
+        <div class="col">
+            <div class="card p-3 bg-primary-subtle border-primary-subtle">
+                <h2 class="h5">🔍 Journaux</h2>
+                <p class="fst-italic">🚧 Implémentation en cours</p>
+            </div>
+            <div class="card p-3 my-3 bg-primary-subtle border-primary-subtle">
+                <h2 class="h5">👥 Joueurs</h2>
+                <p class="fst-italic">🚧 Implémentation en cours</p>
+            </div>
+        </div>
+    </div>
 </div>
 
-<button class="btn btn-primary btn-primary-lg m-3" @onclick="Start">Start</button>
-<button class="btn btn-primary btn-primary-lg m-3" @onclick="Stop">Stop</button>
+
 
 @code
 {
-  [Parameter] public required string ServerName { get; set; }
+    [Parameter] public required string ServerName { get; set; }
 
-  private async Task<bool> IsRunning()
-  {
-    ArmaReforgerServer armaReforgerServer = new(ServiceProvider, ServerName);
-    return armaReforgerServer.IsRunning;
-  }
+    private ServerManager serverManager => ServiceProvider.GetRequiredKeyedService<ServerManager>(ServerName);
+    private bool InProgress { get; set; } = false;
 
-  private async Task Start(MouseEventArgs args)
-  {
-    ArmaReforgerServer armaReforgerServer = new(ServiceProvider, ServerName);
-    if (armaReforgerServer.IsRunning) { await armaReforgerServer.Stop(CancellationToken.None); }
-    await armaReforgerServer.Start(CancellationToken.None);
-  }
+    private bool StartDisabled => InProgress || IsEnabled;
+    private bool StopDisabled => InProgress || !IsEnabled;
+    private bool IsEnabled => serverManager.Enabled;
+    private bool IsRunning => serverManager.Running;
+    private string ErrorMessage = string.Empty;
 
-  private async Task Stop(MouseEventArgs args)
-  {
-    ArmaReforgerServer armaReforgerServer = new(ServiceProvider, ServerName);
-    await armaReforgerServer.Stop(CancellationToken.None);
-  }
+    private async Task Start(MouseEventArgs args)
+    {
+        InProgress = true;
+        try
+        {
+            await serverManager.Enable(CancellationToken.None);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Une erreur est survenue : {ex.Message}";
+        }
+        InProgress = false;
+        StateHasChanged();
+    }
+
+    private async Task Stop(MouseEventArgs args)
+    {
+        InProgress = true;
+        await serverManager.Disable(CancellationToken.None);
+        InProgress = false;
+        StateHasChanged();
+    }
 }
