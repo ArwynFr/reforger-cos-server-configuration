@@ -1,4 +1,5 @@
 using ArwynFr.Reforger.ServerMgr.Components;
+using ArwynFr.Reforger.ServerMgr.Configuration;
 using ArwynFr.Reforger.ServerMgr.Domain;
 using ArwynFr.Reforger.ServerMgr.Infrastructure;
 
@@ -10,6 +11,7 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 SecurityConfiguration.AddAuthentication(builder);
 SecurityConfiguration.AddAuthorization(builder);
 ServerManager.Register(builder);
+ReforgerOptions.Register(builder);
 
 var app = builder.Build();
 
