@@ -43,7 +43,8 @@
                     }
                     else
                     {
-                        <button class="btn btn-lg btn-success w-25 text-uppercase" @onclick="Start" disabled="@StartDisabled">
+                        <button class="btn btn-lg btn-success w-25 text-uppercase" @onclick="Start"
+                                disabled="@StartDisabled">
                             ⏻ On
                         </button>
                         <button class="btn btn-lg btn-danger w-25 text-uppercase" @onclick="Stop" disabled="@StopDisabled">
@@ -67,7 +68,20 @@
             </div>
             <div class="card my-3 bg-primary-subtle border-primary-subtle">
                 <h2 class="h5 card-header">👥 Joueurs</h2>
-                <p class="fst-italic card-body">🚧 Implémentation en cours</p>
+
+                @if (players is { Length: 0 })
+                {
+                    <p class="fst-italic card-body">Aucun joueur connecté</p>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var player in players)
+                        {
+                            <li class="list-group-item">@player</li>
+                        }
+                    </ul>
+                }
             </div>
             <div class="card my-3 bg-primary-subtle border-primary-subtle">
                 <h2 class="h5 card-header">🔧 Configuration</h2>
@@ -93,6 +107,13 @@
     private bool IsEnabled => serverManager.Enabled;
     private bool IsRunning => serverManager.Running;
     private string ErrorMessage = string.Empty;
+
+    private string[] players = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        players = await serverManager.GetPlayers(CancellationToken.None);
+    }
 
     private async Task Start(MouseEventArgs args)
     {

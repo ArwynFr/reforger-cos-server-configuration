@@ -28,6 +28,8 @@ internal class ServerManager(IServiceProvider serviceProvider, string name) : Ba
         }
     }
 
+    public Task<string[]> GetPlayers(CancellationToken cancellationToken) => new ArmaReforgerProcess(serviceProvider, name).GetPlayers(cancellationToken);
+
     public async Task Enable(CancellationToken cancellationToken)
     {
         try
