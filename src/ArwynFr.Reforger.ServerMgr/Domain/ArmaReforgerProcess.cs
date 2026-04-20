@@ -15,7 +15,7 @@ internal class ArmaReforgerProcess(IServiceProvider serviceProvider, string name
     private string BinFilename => Path.Join(Options.Value.BasePath, name, "ArmaReforgerServer");
     private string ConfigFilename => Path.Join(Options.Value.BasePath, name, "server.json");
     private string ProfilePath => Path.Join(Options.Value.BasePath, name);
-    private string StatsFilename => Path.Join(ProfilePath, "ServerAdminTools_Stats.json");
+    private string StatsFilename => Path.Join(ProfilePath, "profile", "ServerAdminTools_Stats.json");
     private string PidContents => new FileInfo(PidFilename) is { Exists: true } ? File.ReadAllText(PidFilename) : string.Empty;
     private int? ProcessId => int.TryParse(PidContents, out var result) ? result : null;
     private Process? Process => Process.GetProcesses().FirstOrDefault(_ => _.Id == ProcessId);
