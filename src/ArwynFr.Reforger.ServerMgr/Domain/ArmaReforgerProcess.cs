@@ -45,13 +45,10 @@ internal class ArmaReforgerProcess(IServiceProvider serviceProvider, string name
 
     public async Task<string[]> GetPlayers(CancellationToken cancellationToken)
     {
-        Console.WriteLine($"Reading {StatsFilename}");
         FileInfo fileInfo = new(StatsFilename);
         if (!fileInfo.Exists) { return []; }
-        
-        Console.WriteLine("File found, reading data");
         using var stream = new FileStream(StatsFilename, FileMode.Open);
         var result = await JsonSerializer.DeserializeAsync<Stats>(stream, cancellationToken: cancellationToken);
-        return result?.ConnectedPlayers.Select(_ => _.Value).ToArray() ?? [];
+        return result?.ConnectedPlayers.Select(_ => _.Value).OrderBy(_ => _).ToArray() ?? [];
     }
 }
