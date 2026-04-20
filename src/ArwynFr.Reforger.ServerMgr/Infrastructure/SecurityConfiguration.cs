@@ -30,7 +30,7 @@ internal static class SecurityConfiguration
 
     internal static Action<AuthorizationOptions> AddAuthorizationBuilder(WebApplicationBuilder builder) => options =>
     {
-        var whitelist = builder.Configuration.GetSection("AuthZ").Get<string[]>() ?? [];
+        var whitelist = builder.Configuration.GetSection("Security:Whitelist").Get<string[]>() ?? [];
         options.DefaultPolicy = new AuthorizationPolicyBuilder().RequireClaim(ClaimTypes.NameIdentifier, whitelist).Build();
     };
 }
