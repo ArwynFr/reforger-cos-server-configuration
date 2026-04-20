@@ -30,9 +30,6 @@ internal class ArmaReforgerProcess(IServiceProvider serviceProvider, string name
     {
         if (Process is not { HasExited: false }) { return; }
         Process.Kill();
-        
-        if (Process is not { HasExited: false }) { return; }
-        await Process.WaitForExitAsync(cancellationToken);
     }
 
     public Task Wait(CancellationToken cancellationToken) => Process switch

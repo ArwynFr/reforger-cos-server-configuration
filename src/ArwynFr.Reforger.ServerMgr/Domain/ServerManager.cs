@@ -20,22 +20,18 @@ internal class ServerManager(IServiceProvider serviceProvider, string name) : Ba
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        Console.WriteLine("Executing");
         while (Enabled && stoppingToken is { IsCancellationRequested: false })
         {
-            Console.WriteLine("loop");
             ArmaReforgerProcess armaReforgerProcess = new(serviceProvider, name);
             await armaReforgerProcess.EnsureStarted(stoppingToken);
             await armaReforgerProcess.Wait(stoppingToken);
         }
-        Console.WriteLine("Executed");
     }
 
     public async Task Enable(CancellationToken cancellationToken)
     {
         try
         {
-            Console.WriteLine("Enable");
             Enabled = true;
             ArmaReforgerProcess armaReforgerProcess = new(serviceProvider, name);
             await armaReforgerProcess.EnsureStarted(cancellationToken);
@@ -50,7 +46,6 @@ internal class ServerManager(IServiceProvider serviceProvider, string name) : Ba
 
     public async Task Disable(CancellationToken cancellationToken)
     {
-        Console.WriteLine("Disable");
         Enabled = false;
         ArmaReforgerProcess armaReforgerProcess = new(serviceProvider, name);
         await armaReforgerProcess.Stop(cancellationToken);
