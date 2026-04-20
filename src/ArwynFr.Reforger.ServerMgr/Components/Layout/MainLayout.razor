@@ -3,12 +3,12 @@
 @inherits LayoutComponentBase
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<div class="page d-flex">
+<div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
 
-    <main class="d-flex flex-column">
+    <main>
         <div class="top-row px-4">
             @if (username is not "")
             {
@@ -16,7 +16,7 @@
             }
         </div>
 
-        <article class="content px-4 mb-3 h-100 d-flex flex-column">
+        <article class="content px-4">
             @Body
         </article>
     </main>

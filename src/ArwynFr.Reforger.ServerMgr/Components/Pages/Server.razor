@@ -8,42 +8,50 @@
 
 @inject IServiceProvider ServiceProvider
 
+<PageTitle>Serveur @ServerName</PageTitle>
+
 <div class="container">
 
-    <h1 class="mb-5">Server control : @ServerName</h1>
+    <h1 class="mb-5">Serveur : @ServerName</h1>
 
     <div class="row gx-5">
         <div class="col">
-            <div class="card p-3 bg-primary-subtle border-primary-subtle">
-                <h2 class="h5">⚡ Etat du serveur</h2>
-                <p class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="enabledCheck" checked="@IsEnabled"
-                           disabled>
-                    <label class="form-check-label" for="enabledCheck">Serveur actif</label>
-                </p>
-                <p class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="runningCheck" checked="@IsRunning"
-                           disabled>
-                    <label class="form-check-label" for="runningCheck">Serveur démarré</label>
-                </p>
-            </div>
-            <div class="card p-3 my-3 bg-primary-subtle border-primary-subtle">
-                <h2 class="h5">⏻ Contrôle du serveur</h2>
-                @if (InProgress)
-                {
-                    <div class="text-center m-3">
+            <div class="card bg-dark-subtle">
+                <h2 class="h5 card-header">🔌 Etat du serveur</h2>
+                <div class="card-body">
+                    <div class="bg-light-subtle p-3 rounded m-2">
+                        <p class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="enabledCheck"
+                                   checked="@IsEnabled" disabled>
+                            <label class="form-check-label" for="enabledCheck"> Surveillance active </label>
+                        </p>
+                    </div>
+                    <div class="bg-light-subtle p-3 rounded m-2">
+                        <p class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="runningCheck"
+                                   checked="@IsRunning" disabled>
+                            <label class="form-check-label" for="runningCheck"> Processus démarré </label>
+                        </p>
+                    </div>
+                </div>
+                <div class="text-center card-body">
+                    @if (InProgress)
+                    {
                         <div class="spinner-border text-primary" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
-                    </div>
-                }
-                else
-                {
-                    <p class="btn-group">
-                        <button class="btn btn-lg btn-success" @onclick="Start" disabled="@StartDisabled"> Start </button>
-                        <button class="btn btn-lg btn-danger" @onclick="Stop" disabled="@StopDisabled"> Stop </button>
-                    </p>
-                }
+                    }
+                    else
+                    {
+                        <button class="btn btn-lg btn-success w-25 text-uppercase" @onclick="Start" disabled="@StartDisabled">
+                            ⏻ On
+                        </button>
+                        <button class="btn btn-lg btn-danger w-25 text-uppercase" @onclick="Stop" disabled="@StopDisabled">
+                            ⏻ Off
+                        </button>
+                    
+                    }
+                </div>
             </div>
             @if (ErrorMessage is not "")
             {
@@ -53,21 +61,21 @@
             }
         </div>
         <div class="col">
-            <div class="card p-3 bg-primary-subtle border-primary-subtle">
-                <h2 class="h5">🔍 Journaux</h2>
-                <p class="fst-italic">🚧 Implémentation en cours</p>
+            <div class="card bg-primary-subtle border-primary-subtle">
+                <h2 class="h5 card-header">🔍 Journaux</h2>
+                <p class="fst-italic card-body">🚧 Implémentation en cours</p>
             </div>
-            <div class="card p-3 my-3 bg-primary-subtle border-primary-subtle">
-                <h2 class="h5">👥 Joueurs</h2>
-                <p class="fst-italic">🚧 Implémentation en cours</p>
+            <div class="card my-3 bg-primary-subtle border-primary-subtle">
+                <h2 class="h5 card-header">👥 Joueurs</h2>
+                <p class="fst-italic card-body">🚧 Implémentation en cours</p>
             </div>
-            <div class="card p-3 my-3 bg-primary-subtle border-primary-subtle">
-                <h2 class="h5">🔧 Configuration</h2>
-                <p class="fst-italic">🚧 Implémentation en cours</p>
+            <div class="card my-3 bg-primary-subtle border-primary-subtle">
+                <h2 class="h5 card-header">🔧 Configuration</h2>
+                <p class="fst-italic card-body">🚧 Implémentation en cours</p>
             </div>
-            <div class="card p-3 my-3 bg-primary-subtle border-primary-subtle">
-                <h2 class="h5">🔧 ServerAdminTool</h2>
-                <p class="fst-italic">🚧 Implémentation en cours</p>
+            <div class="card my-3 bg-primary-subtle border-primary-subtle">
+                <h2 class="h5 card-header">🔧 ServerAdminTool</h2>
+                <p class="fst-italic card-body">🚧 Implémentation en cours</p>
             </div>
         </div>
     </div>
@@ -88,17 +96,20 @@
 
     private async Task Start(MouseEventArgs args)
     {
-        InProgress = true;
         try
         {
+            InProgress = true;
             await serverManager.Enable(CancellationToken.None);
         }
         catch (Exception ex)
         {
             ErrorMessage = $"Une erreur est survenue : {ex.Message}";
         }
-        InProgress = false;
-        StateHasChanged();
+        finally
+        {
+            InProgress = false;
+            StateHasChanged();
+        }
     }
 
     private async Task Stop(MouseEventArgs args)
