@@ -14,14 +14,14 @@
 <div class="container">
     <h1 class="mb-5">Serveur : @ServerName</h1>
     <div class="row gx-5">
-        <div class="col">
+        <div class="col-4">
             <ServerProcess ServerName="@ServerName" />
-        </div>
-        <div class="col">
-            <ServerLogs />
             <ServerPlayers ServerName="@ServerName" />
+        </div>
+        <div class="col-8">
             <ServerAdminToolsConfig ServerName="@ServerName" />
-            <ServerConfiguration />
+            <ServerConfiguration ServerName="@ServerName" />
+            <ServerLogs />
         </div>
     </div>
 </div>
