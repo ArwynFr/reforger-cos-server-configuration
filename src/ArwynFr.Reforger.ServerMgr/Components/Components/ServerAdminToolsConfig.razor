@@ -1,8 +1,82 @@
+@using System.Text.Json
+@using ArwynFr.Reforger.ServerMgr.Configuration
+@using ArwynFr.Reforger.ServerMgr.Infrastructure.ServerAdminTools
+@using Microsoft.Extensions.Options
+
+@inject IOptions<ReforgerOptions> ReforgerOptions
+  
 <div class="card my-3 bg-primary-subtle border-primary-subtle">
+  
   <h2 class="h5 card-header">🔧 ServerAdminTool</h2>
-  <p class="fst-italic card-body">🚧 Implémentation en cours</p>
+
+  @if (ErrorMessage is not "")
+  {
+    <p class="card p-3 m-3 bg-danger-subtle border-danger-subtle text-danger">
+      @ErrorMessage
+    </p>
+  }
+  
+  <textarea class="m-3" @bind="Contents" />
+  
+  @if (!IsValid)
+  {
+    <p class="card p-3 m-3 bg-warning-subtle border-warning-subtle">
+      Le contenu du fichier n'est pas valide
+    </p>
+  }
+  
+  <button class="btn btn-primary card-footer" disabled="@SaveDisabled" @onclick="Enregistrer">Enregistrer</button>
+
 </div>
 
 @code {
   [Parameter] public required string ServerName { get; set; }
+
+  private string Contents = string.Empty;
+  private string ErrorMessage = string.Empty;
+  private bool SaveDisabled => !IsValid;
+
+  private string Filename => Path.Join([
+    ReforgerOptions.Value.BasePath,
+    ServerName,
+    "profile",
+    "ServerAdminTools_Config.json"
+  ]);
+
+  protected override async Task OnInitializedAsync()
+  {
+    FileInfo fileInfo = new(Filename);
+    if (fileInfo is not { Exists: true })
+    {
+      ErrorMessage = "Le fichier n'existe pas";
+      return;
+    }
+
+    using FileStream fileStream = new(fileInfo.FullName, FileMode.Open);
+    using StreamReader streamReader = new(fileStream);
+    Contents = await streamReader.ReadToEndAsync(CancellationToken.None);
+  }
+
+  public bool IsValid
+  {
+    get
+    {
+      try
+      {
+        return JsonSerializer.Deserialize<Config>(Contents) is not null;
+      }
+      catch (Exception)
+      {
+        return false;
+      }
+    }
+  }
+  private async Task Enregistrer(MouseEventArgs args)
+  {
+    FileInfo fileInfo = new(Filename);
+    if (fileInfo.Directory is { Exists: false } parent) { parent.Create(); }
+    using FileStream fileStream = new(fileInfo.FullName, FileMode.Create);
+    using StreamWriter streamWriter = new(fileStream);
+    await streamWriter.WriteAsync(Contents);
+  }
 }
