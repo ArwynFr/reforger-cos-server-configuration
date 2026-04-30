@@ -15,4 +15,8 @@ public record Stats(
     [property: JsonPropertyName("players")] int? Players,
     [property: JsonPropertyName("connected_players")] IDictionary<string, string> ConnectedPlayers,
     [property: JsonPropertyName("events")] Events Events
-);
+)
+{
+    public static Task<Stats?> Read(FileInfo fileInfo, CancellationToken cancellationToken) => JsonFileWriter.Read<Stats>(fileInfo, cancellationToken);
+    public Task Write(FileInfo fileInfo, CancellationToken cancellationToken) => JsonFileWriter.Write(this, fileInfo, cancellationToken);
+}

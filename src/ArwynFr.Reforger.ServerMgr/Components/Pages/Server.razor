@@ -1,3 +1,4 @@
+@using ArwynFr.Reforger.ServerMgr.Components.Components
 @using ArwynFr.Reforger.ServerMgr.Domain
 @using Microsoft.AspNetCore.Authorization
 @using System.Diagnostics
@@ -11,86 +12,16 @@
 <PageTitle>Serveur @ServerName</PageTitle>
 
 <div class="container">
-
     <h1 class="mb-5">Serveur : @ServerName</h1>
-
     <div class="row gx-5">
         <div class="col">
-            <div class="card bg-dark-subtle">
-                <h2 class="h5 card-header">🔌 Etat du serveur</h2>
-                <div class="card-body">
-                    <div class="bg-light-subtle p-3 rounded m-2">
-                        <p class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="enabledCheck"
-                                   checked="@IsEnabled" disabled>
-                            <label class="form-check-label" for="enabledCheck"> Surveillance active </label>
-                        </p>
-                    </div>
-                    <div class="bg-light-subtle p-3 rounded m-2">
-                        <p class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="runningCheck"
-                                   checked="@IsRunning" disabled>
-                            <label class="form-check-label" for="runningCheck"> Processus démarré </label>
-                        </p>
-                    </div>
-                </div>
-                <div class="text-center card-body">
-                    @if (InProgress)
-                    {
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    }
-                    else
-                    {
-                        <button class="btn btn-lg btn-success w-25 text-uppercase" @onclick="Start"
-                                disabled="@StartDisabled">
-                            ⏻ On
-                        </button>
-                        <button class="btn btn-lg btn-danger w-25 text-uppercase" @onclick="Stop" disabled="@StopDisabled">
-                            ⏻ Off
-                        </button>
-                    
-                    }
-                </div>
-            </div>
-            @if (ErrorMessage is not "")
-            {
-                <p class="card p-3 my-3 bg-danger-subtle border-danger-subtle text-danger">
-                    @ErrorMessage
-                </p>
-            }
+            <ServerProcess ServerName="@ServerName" />
         </div>
         <div class="col">
-            <div class="card bg-primary-subtle border-primary-subtle">
-                <h2 class="h5 card-header">🔍 Journaux</h2>
-                <p class="fst-italic card-body">🚧 Implémentation en cours</p>
-            </div>
-            <div class="card my-3 bg-primary-subtle border-primary-subtle">
-                <h2 class="h5 card-header">👥 Joueurs</h2>
-
-                @if (players is { Length: 0 })
-                {
-                    <p class="fst-italic card-body">Aucun joueur connecté</p>
-                }
-                else
-                {
-                    <ul class="list-group list-group-flush">
-                        @foreach (var player in players)
-                        {
-                            <li class="list-group-item">@player</li>
-                        }
-                    </ul>
-                }
-            </div>
-            <div class="card my-3 bg-primary-subtle border-primary-subtle">
-                <h2 class="h5 card-header">🔧 Configuration</h2>
-                <p class="fst-italic card-body">🚧 Implémentation en cours</p>
-            </div>
-            <div class="card my-3 bg-primary-subtle border-primary-subtle">
-                <h2 class="h5 card-header">🔧 ServerAdminTool</h2>
-                <p class="fst-italic card-body">🚧 Implémentation en cours</p>
-            </div>
+            <ServerLogs />
+            <ServerPlayers ServerName="@ServerName" />
+            <ServerAdminToolsConfig ServerName="@ServerName" />
+            <ServerConfiguration />
         </div>
     </div>
 </div>
@@ -98,46 +29,4 @@
 @code
 {
     [Parameter] public required string ServerName { get; set; }
-
-    private ServerManager serverManager => ServiceProvider.GetRequiredKeyedService<ServerManager>(ServerName);
-    private bool InProgress { get; set; } = false;
-
-    private bool StartDisabled => InProgress || IsEnabled;
-    private bool StopDisabled => InProgress || !IsEnabled;
-    private bool IsEnabled => serverManager.Enabled;
-    private bool IsRunning => serverManager.Running;
-    private string ErrorMessage = string.Empty;
-
-    private string[] players = [];
-
-    protected override async Task OnInitializedAsync()
-    {
-        players = await serverManager.GetPlayers(CancellationToken.None);
-    }
-
-    private async Task Start(MouseEventArgs args)
-    {
-        try
-        {
-            InProgress = true;
-            await serverManager.Enable(CancellationToken.None);
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = $"Une erreur est survenue : {ex.Message}";
-        }
-        finally
-        {
-            InProgress = false;
-            StateHasChanged();
-        }
-    }
-
-    private async Task Stop(MouseEventArgs args)
-    {
-        InProgress = true;
-        await serverManager.Disable(CancellationToken.None);
-        InProgress = false;
-        StateHasChanged();
-    }
 }

@@ -1,0 +1,47 @@
+@using ArwynFr.Reforger.ServerMgr.Configuration
+@using ArwynFr.Reforger.ServerMgr.Domain
+@using ArwynFr.Reforger.ServerMgr.Infrastructure.ServerAdminTools
+@using Microsoft.Extensions.Options
+
+@inject IOptions<ReforgerOptions> ReforgerOptions
+
+<div class="card my-3 bg-primary-subtle border-primary-subtle">
+  <h2 class="h5 card-header">👥 Joueurs</h2>
+
+  @if (players is { Length: 0 })
+  {
+    <p class="fst-italic card-body">Aucun joueur connecté</p>
+  }
+  else
+  {
+    <ul class="list-group list-group-flush">
+      @foreach (var player in players)
+      {
+        <li class="list-group-item">@player</li>
+      }
+    </ul>
+  }
+</div>
+
+@code {
+  [Parameter] public required string ServerName { get; set; }
+
+  private string[] players = [];
+
+  protected override async Task OnInitializedAsync()
+  {
+    players = await GetStatistics(CancellationToken.None) switch
+    {
+      Stats stats => [.. stats.ConnectedPlayers.Select(_ => _.Value)],
+      _ => []
+    };
+  }
+
+  private string StatsFilename
+  => Path.Join(ReforgerOptions.Value.BasePath, ServerName, "profile", "ServerAdminTools_Stats.json");
+  private FileInfo StatsFileInfo
+  => new(StatsFilename);
+  private async Task<Stats?> GetStatistics(CancellationToken cancellationToken)
+    => await Stats.Read(StatsFileInfo, cancellationToken);
+  
+}

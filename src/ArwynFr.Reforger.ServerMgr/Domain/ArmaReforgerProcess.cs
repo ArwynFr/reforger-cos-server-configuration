@@ -1,8 +1,6 @@
 using System.Diagnostics;
-using System.Text.Json;
 
 using ArwynFr.Reforger.ServerMgr.Configuration;
-using ArwynFr.Reforger.ServerMgr.Infrastructure.ServerAdminTools;
 
 using Microsoft.Extensions.Options;
 
@@ -15,7 +13,7 @@ internal class ArmaReforgerProcess(IServiceProvider serviceProvider, string name
     private string BinFilename => Path.Join(Options.Value.BasePath, name, "ArmaReforgerServer");
     private string ConfigFilename => Path.Join(Options.Value.BasePath, name, "config.json");
     private string ProfilePath => Path.Join(Options.Value.BasePath, name);
-    private string StatsFilename => Path.Join(ProfilePath, "profile", "ServerAdminTools_Stats.json");
+    // private string StatsFilename => Path.Join(ProfilePath, "profile", "ServerAdminTools_Stats.json");
     private string PidContents => new FileInfo(PidFilename) is { Exists: true } ? File.ReadAllText(PidFilename) : string.Empty;
     private int? ProcessId => int.TryParse(PidContents, out var result) ? result : null;
     private Process? Process => Process.GetProcesses().FirstOrDefault(_ => _.Id == ProcessId);
@@ -42,13 +40,4 @@ internal class ArmaReforgerProcess(IServiceProvider serviceProvider, string name
         { HasExited: false } => Process.WaitForExitAsync(cancellationToken),
         _ => Task.CompletedTask
     };
-
-    public async Task<string[]> GetPlayers(CancellationToken cancellationToken)
-    {
-        FileInfo fileInfo = new(StatsFilename);
-        if (!fileInfo.Exists) { return []; }
-        using var stream = new FileStream(StatsFilename, FileMode.Open);
-        var result = await JsonSerializer.DeserializeAsync<Stats>(stream, cancellationToken: cancellationToken);
-        return result?.ConnectedPlayers.Select(_ => _.Value).OrderBy(_ => _).ToArray() ?? [];
-    }
 }
