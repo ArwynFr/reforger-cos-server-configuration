@@ -6,8 +6,8 @@ internal record class ReforgerOptions
 {
     private const string ConfigurationSectionName = "Reforger";
 
-    [Required]
-    public string? BasePath { get; set; }
+    [Required] public string? BasePath { get; set; }
+    [Required] public Uri? ModpackUri { get; set; }
 
     public static void Register(WebApplicationBuilder builder)
     => builder.Services.AddOptions<ReforgerOptions>().BindConfiguration(ConfigurationSectionName);

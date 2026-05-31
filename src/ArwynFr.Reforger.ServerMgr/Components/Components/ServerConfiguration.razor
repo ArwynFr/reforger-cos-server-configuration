@@ -57,9 +57,8 @@
 
   private async Task Fetch(MouseEventArgs args)
   {
-    Uri uri = new("http://localhost:5092/server.json");
     using var client = HttpClientFactory.CreateClient();
-    var mods = await client.GetFromJsonAsync<Infrastructure.ArmaReforgerServer.Mod[]>(uri);
+    var mods = await client.GetFromJsonAsync<Infrastructure.ArmaReforgerServer.Mod[]>(ReforgerOptions.Value.ModpackUri);
     var config = JsonSerializer.Deserialize<Infrastructure.ArmaReforgerServer.Config>(Contents);
     if (mods is null && config is null) { throw new InvalidOperationException(); }
     config = config! with { Game = config.Game with { Mods = mods! } };
