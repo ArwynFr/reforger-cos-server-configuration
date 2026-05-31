@@ -12,6 +12,7 @@ SecurityConfiguration.AddAuthentication(builder);
 SecurityConfiguration.AddAuthorization(builder);
 ServerManager.Register(builder);
 ReforgerOptions.Register(builder);
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
