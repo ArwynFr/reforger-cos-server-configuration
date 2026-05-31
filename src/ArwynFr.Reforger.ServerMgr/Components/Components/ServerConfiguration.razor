@@ -62,6 +62,9 @@
     var config = JsonSerializer.Deserialize<Infrastructure.ArmaReforgerServer.Config>(Contents);
     if (mods is null && config is null) { throw new InvalidOperationException(); }
     config = config! with { Game = config.Game with { Mods = mods! } };
-    Contents = JsonSerializer.Serialize(config);
+    Contents = JsonSerializer.Serialize(config, new JsonSerializerOptions()
+    {
+      DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+    });
   }
 }
