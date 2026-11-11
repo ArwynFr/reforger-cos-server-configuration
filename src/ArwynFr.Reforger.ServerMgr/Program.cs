@@ -1,18 +1,18 @@
+using ArwynFr.Reforger.ServerMgr;
 using ArwynFr.Reforger.ServerMgr.Components;
 using ArwynFr.Reforger.ServerMgr.Configuration;
 using ArwynFr.Reforger.ServerMgr.Domain;
-using ArwynFr.Reforger.ServerMgr.Infrastructure;
 
 Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSystemd();
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
-SecurityConfiguration.AddAuthentication(builder);
-SecurityConfiguration.AddAuthorization(builder);
+builder.AddSecurity();
 ServerManager.Register(builder);
 ReforgerOptions.Register(builder);
 builder.Services.AddHttpClient();
+builder.Services.AddScoped<FileTailService>();
 
 var app = builder.Build();
 

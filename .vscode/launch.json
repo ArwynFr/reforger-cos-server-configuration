@@ -8,8 +8,7 @@
       "name": "C#: ArwynFr.Reforger.ServerMgr Debug",
       "type": "dotnet",
       "request": "launch",
-      "projectPath": "${workspaceFolder}/src/ArwynFr.Reforger.ServerMgr/ArwynFr.Reforger.ServerMgr.csproj"
+      "projectPath": "${workspaceFolder}/src/ArwynFr.Reforger.ServerMgr/ArwynFr.Reforger.ServerMgr.csproj",
     }
-
   ]
 }

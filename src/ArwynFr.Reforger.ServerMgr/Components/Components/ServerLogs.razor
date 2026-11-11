@@ -1,4 +1,155 @@
-<div class="card mb-3 bg-primary-subtle">
-  <h2 class="h5 card-header">🔍 Journaux</h2>
-  <p class="fst-italic card-body">🚧 Implémentation en cours</p>
+@using System.Globalization
+@using System.Text
+@using ArwynFr.Reforger.ServerMgr
+@using ArwynFr.Reforger.ServerMgr.Domain
+@implements IAsyncDisposable
+
+@inject TimeProvider TimeProvider
+@inject FileTailService FileTailService
+@inject ILogger<ServerLogs> Logger
+@inject IJSRuntime JS
+
+<script>
+  window.isLogsAtBottom = (id) => {
+    const element = document.getElementById(id);
+
+    if (!element) return true;
+
+    return element.scrollHeight - element.scrollTop - element.clientHeight <= 50;
+  };
+
+  window.scrollLogsToBottom = (id) => {
+    const element = document.getElementById(id);
+    if (!element) return true;
+    element.scrollTop = element.scrollHeight;
+  };
+</script>
+
+<div class="card h-100 overflow-hidden">
+  <div class="card-header d-flex align-items-center">
+    <span>
+      🔍 Journaux
+    </span>
+    <span class="small text-secondary mx-3">
+      Dernière actualisation : @_lastUpdate
+    </span>
+    <span class="dropdown ms-auto">
+      <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        @current?.LogDirectoryName.Value.ToString("dd MMMM yyyy - HH:mm:ss", CultureInfo.CurrentCulture)
+      </button>
+      <ul class="dropdown-menu">
+        @foreach (var log in logs)
+        {
+          <li>
+            <button class="dropdown-item @(log == current ? "active" : "")" @onclick="() => SetActive(log)">
+              @log.LogDirectoryName.Value.ToString("dd MMMM yyyy - HH:mm:ss", CultureInfo.CurrentCulture)
+            </button>
+          </li>
+        }
+      </ul>
+    </span>
+  </div>
+  <pre class="flex-grow-1 p-1 m-0" id="serverLogs">@contents</pre>
 </div>
+
+@code {
+  [Parameter] public required string ServerName { get; set; }
+
+  private PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(250));
+  private CancellationTokenSource _cts = new();
+  private Task? _timerTask;
+  private string _lastUpdate = "Jamais";
+  private string contents = string.Empty;
+
+  private LogDirectory[] logs = [];
+  private LogDirectory? current;
+  private FileSystemWatcher? fileSystemWatcher;
+
+  private void SetActive(LogDirectory? log)
+  {
+    contents = string.Empty;
+    current = log;
+    if (log is not null)
+    {
+      var logfile = Path.Combine(log.Parent.FullName, log.LogDirectoryName.ToPath(), "console.log");
+      if (new FileInfo(logfile).Exists)
+      {
+        FileTailService.Initialize(logfile);
+      }
+    }
+    InvokeAsync(StateHasChanged);
+  }
+
+  private void OnFileSystemChanged(object sender, FileSystemEventArgs e)
+  {
+    logs = Directory
+      .GetDirectories(@"C:\reforger\cos-1\logs\")
+      .Select(_ => LogDirectory.Factory(_))
+      .OfType<LogDirectory>()
+      .OrderByDescending(_ => _.LogDirectoryName.Value)
+      .ToArray();
+
+    if (current is null || (logs.Length > 1 && current == logs[2]))
+    {
+      SetActive(logs.FirstOrDefault());
+    }
+  }
+
+  protected override async Task OnInitializedAsync()
+  {
+    _timerTask = RunTimerAsync(_cts.Token);
+    fileSystemWatcher = new(@"C:\reforger\cos-1\logs\");
+    fileSystemWatcher.Created += OnFileSystemChanged;
+    fileSystemWatcher.NotifyFilter = NotifyFilters.DirectoryName;
+    fileSystemWatcher.IncludeSubdirectories = false;
+    fileSystemWatcher.EnableRaisingEvents = true;
+
+    OnFileSystemChanged(this, new(WatcherChangeTypes.All, string.Empty, null));
+  }
+
+  private async Task RunTimerAsync(CancellationToken cancellationToken)
+  {
+    try
+    {
+      while (await _timer.WaitForNextTickAsync(cancellationToken))
+      {
+        await UpdateContents(cancellationToken);
+      }
+    }
+    catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+    {
+      // Arrêt normal
+    }
+    catch (Exception ex)
+    {
+      Logger.LogError(ex, "Erreur dans le timer du composant");
+    }
+  }
+
+  private async Task UpdateContents(CancellationToken cancellationToken)
+  {
+    StringBuilder stringBuilder = new(contents);
+    bool shouldScroll = await JS.InvokeAsync<bool>("isLogsAtBottom", cancellationToken, "serverLogs");
+    await foreach (var line in FileTailService.ReadNewContentAsync(cancellationToken))
+    {
+      stringBuilder.AppendLine(line);
+    }
+    await InvokeAsync(() =>
+    {
+      contents = stringBuilder.ToString();
+      _lastUpdate = TimeProvider.GetLocalNow().ToString("G");
+      StateHasChanged();
+    });
+
+    if (!shouldScroll) { return; }
+    await JS.InvokeVoidAsync("scrollLogsToBottom", cancellationToken, "serverLogs");
+  }
+
+  public async ValueTask DisposeAsync()
+  {
+    await _cts.CancelAsync();
+    if (_timerTask is not null) { await _timerTask; }
+    _timer.Dispose();
+    _cts.Dispose();
+  }
+}

@@ -1,7 +1,5 @@
 @using ArwynFr.Reforger.ServerMgr.Components.Components
-@using ArwynFr.Reforger.ServerMgr.Domain
 @using Microsoft.AspNetCore.Authorization
-@using System.Diagnostics
 
 @page "/server/{ServerName}"
 @rendermode InteractiveServer
@@ -11,18 +9,21 @@
 
 <PageTitle>Serveur @ServerName</PageTitle>
 
-<div class="container">
-    <h1 class="mb-5">Serveur : @ServerName</h1>
-    <div class="row gx-5">
-        <div class="col-4">
-            <ServerProcess ServerName="@ServerName" />
+<div class="container d-flex flex-column h-100 py-3">
+    <div class="mb-3 flex-shrink-0">
+        <ServerProcess ServerName="@ServerName" />
+    </div>
+    <div class="flex-grow-1 overflow-hidden row">
+        <div class="col-3 h-100">
             <ServerPlayers ServerName="@ServerName" />
         </div>
-        <div class="col-8">
-            <ServerAdminToolsConfig ServerName="@ServerName" />
-            <ServerConfiguration ServerName="@ServerName" />
-            <ServerLogs />
+        <div class="col-9 h-100">
+            <ServerLogs ServerName="@ServerName" />
         </div>
+    </div>
+    <div class="mt-3 flex-shrink-0">
+        <ServerConfiguration ServerName="@ServerName" />
+        <ServerAdminToolsConfig ServerName="@ServerName" />
     </div>
 </div>
 
