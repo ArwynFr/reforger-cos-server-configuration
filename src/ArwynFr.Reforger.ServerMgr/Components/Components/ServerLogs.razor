@@ -55,6 +55,8 @@
 @code {
   [Parameter] public required string ServerName { get; set; }
 
+  private IOptions<ReforgerOptions> Options => serviceProvider.GetRequiredService<IOptions<ReforgerOptions>>();
+
   private PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(250));
   private CancellationTokenSource _cts = new();
   private Task? _timerTask;
@@ -83,7 +85,7 @@
   private void OnFileSystemChanged(object sender, FileSystemEventArgs e)
   {
     logs = Directory
-      .GetDirectories(@"C:\reforger\cos-1\logs\")
+      .GetDirectories(Path.Join(Options.Value.BasePath, ServerName, "logs"))
       .Select(_ => LogDirectory.Factory(_))
       .OfType<LogDirectory>()
       .OrderByDescending(_ => _.LogDirectoryName.Value)
@@ -98,7 +100,7 @@
   protected override async Task OnInitializedAsync()
   {
     _timerTask = RunTimerAsync(_cts.Token);
-    fileSystemWatcher = new(@"C:\reforger\cos-1\logs\");
+    fileSystemWatcher = new(Path.Join(Options.Value.BasePath, ServerName, "logs"));
     fileSystemWatcher.Created += OnFileSystemChanged;
     fileSystemWatcher.NotifyFilter = NotifyFilters.DirectoryName;
     fileSystemWatcher.IncludeSubdirectories = false;
