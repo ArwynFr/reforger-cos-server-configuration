@@ -1,12 +1,15 @@
 @using System.Globalization
 @using System.Text
 @using ArwynFr.Reforger.ServerMgr
+@using ArwynFr.Reforger.ServerMgr.Configuration
 @using ArwynFr.Reforger.ServerMgr.Domain
+@using Microsoft.Extensions.Options
 @implements IAsyncDisposable
 
 @inject TimeProvider TimeProvider
 @inject FileTailService FileTailService
 @inject ILogger<ServerLogs> Logger
+@inject IOptions<ReforgerOptions> Options
 @inject IJSRuntime JS
 
 <script>
@@ -34,7 +37,8 @@
       Dernière actualisation : @_lastUpdate
     </span>
     <span class="dropdown ms-auto">
-      <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
         @current?.LogDirectoryName.Value.ToString("dd MMMM yyyy - HH:mm:ss", CultureInfo.CurrentCulture)
       </button>
       <ul class="dropdown-menu">
@@ -54,8 +58,6 @@
 
 @code {
   [Parameter] public required string ServerName { get; set; }
-
-  private IOptions<ReforgerOptions> Options => serviceProvider.GetRequiredService<IOptions<ReforgerOptions>>();
 
   private PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(250));
   private CancellationTokenSource _cts = new();
